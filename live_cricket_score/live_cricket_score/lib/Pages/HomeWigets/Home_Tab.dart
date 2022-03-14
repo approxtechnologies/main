@@ -66,7 +66,7 @@ class _Home_TabState extends State<Home_Tab>
                         style: TextStyle(
                           fontSize: 24.0,
                           color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,  
                         ),
                       ),
                     ),

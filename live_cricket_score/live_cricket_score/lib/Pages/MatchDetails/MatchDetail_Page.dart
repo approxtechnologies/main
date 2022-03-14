@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:live_cricket_score/Pages/MatchDetails/Match_Info.dart';
+import 'package:live_cricket_score/Pages/MatchDetails/Match_Info_Tab.dart';
+import 'package:live_cricket_score/Pages/MatchDetails/Overs_Pages/Overs_Tab.dart';
+import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/ScoreBoard.dart';
+import 'package:live_cricket_score/models/ScorBoardModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -22,7 +25,7 @@ class MatchDetail_Page extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: DefaultTabController(
-          length: 3,
+          length: 5,
           child: Scaffold(
               body: NestedScrollView(
             headerSliverBuilder:
@@ -35,6 +38,7 @@ class MatchDetail_Page extends StatelessWidget {
                   pinned: true,
                   floating: true,
                   bottom: TabBar(
+                    isScrollable: true,
                     tabs: [
                       Tab(child: Text('INFO')),
                       Tab(child: Text('LIVE')),
@@ -48,11 +52,11 @@ class MatchDetail_Page extends StatelessWidget {
             },
             body: TabBarView(
               children: <Widget>[
-                Match_Info(),
-                Match_Info(),
-                Match_Info(),
-                Match_Info(),
-                Match_Info(),
+                Match_Info_Tab(items: items),
+                Match_Info_Tab(items: items),
+                Score_Board_Tab(items: items),
+                Overs_Tab(items: items),
+                Match_Info_Tab(items: items),
               ],
             ),
           )),

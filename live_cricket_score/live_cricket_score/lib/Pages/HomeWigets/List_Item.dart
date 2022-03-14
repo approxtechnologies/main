@@ -63,7 +63,7 @@ class List_Item extends StatelessWidget {
                         .text
                         .bold
                         .xl
-                        .make()
+                        .make(),
                 ],
               ).p8(),
             ),
