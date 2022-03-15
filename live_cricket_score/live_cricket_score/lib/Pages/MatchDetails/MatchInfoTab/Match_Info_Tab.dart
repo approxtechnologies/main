@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:live_cricket_score/Pages/MatchDetails/MatchInfoTab/MainTeam_Page.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:live_cricket_score/models/DataModel.dart';
@@ -76,35 +77,55 @@ class _Match_InfoState extends State<Match_Info_Tab>
                     ],
                   ),
                 ),
-                Container(
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.all(8),
-                        child: Text(data.team1!.teamName!).p12(),
-                      ),
-                      Column().expand(),
-                      Icon(Icons.arrow_forward_ios),
-                      10.widthBox
-                    ],
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
+                InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainTeamPage(
+                          items: items,
+                          ii: 0,
+                        ),
+                      )),
+                  child: Container(
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
                           color: Colors.white,
                           padding: EdgeInsets.all(8),
-                          child: Text(data.team2!.teamName!).p12()),
-                      Column().expand(),
-                      Icon(Icons.arrow_forward_ios),
-                      10.widthBox
-                    ],
+                          child: Text(data.team1!.teamName!).p12(),
+                        ),
+                        Column().expand(),
+                        Icon(Icons.arrow_forward_ios),
+                        10.widthBox
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainTeamPage(
+                          items: items,
+                          ii: 1,
+                        ),
+                      )),
+                  child: Container(
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.all(8),
+                            child: Text(data.team2!.teamName!).p12()),
+                        Column().expand(),
+                        Icon(Icons.arrow_forward_ios),
+                        10.widthBox
+                      ],
+                    ),
                   ),
                 ),
                 Container(

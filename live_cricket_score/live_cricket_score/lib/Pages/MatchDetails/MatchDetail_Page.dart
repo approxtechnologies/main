@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:live_cricket_score/Pages/MatchDetails/Match_Info_Tab.dart';
+import 'package:live_cricket_score/Pages/MatchDetails/HighLights/HighLights_Tab.dart';
+import 'package:live_cricket_score/Pages/MatchDetails/MatchInfoTab/Match_Info_Tab.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/Overs_Pages/Overs_Tab.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/ScoreBoard.dart';
 import 'package:live_cricket_score/models/ScorBoardModel.dart';
@@ -32,9 +33,15 @@ class MatchDetail_Page extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 new SliverAppBar(
-                  title: Text('Cricket Live Score'),
+                  title: Text(
+                    "${items.matchInfo!.team1!.teamSName} VS ${items.matchInfo!.team2!.teamSName}",
+                    style: TextStyle(fontSize: 18),
+                  ),
                   titleSpacing: 0,
-                  leading: Icon(Icons.menu),
+                  leading: new IconButton(
+                    icon: new Icon(Icons.arrow_back_ios_new),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                   pinned: true,
                   floating: true,
                   bottom: TabBar(
@@ -56,7 +63,7 @@ class MatchDetail_Page extends StatelessWidget {
                 Match_Info_Tab(items: items),
                 Score_Board_Tab(items: items),
                 Overs_Tab(items: items),
-                Match_Info_Tab(items: items),
+                HighLights_Tab(items: items),
               ],
             ),
           )),

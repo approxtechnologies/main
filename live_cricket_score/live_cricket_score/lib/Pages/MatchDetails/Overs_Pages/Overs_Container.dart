@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:live_cricket_score/models/OversModel.dart';
+import 'package:live_cricket_score/utils/Utils.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Overs_Container extends StatelessWidget {
@@ -15,7 +16,7 @@ class Overs_Container extends StatelessWidget {
   Widget build(BuildContext context) {
     String s = "";
     for (int i = 0; i < overSep.ovrBatNames!.length; i++)
-      s += overSep.ovrBatNames![i];
+      s += overSep.ovrBatNames![i] + " ";
 
     var balls = overSep.overSummary!.split(" ");
     return Container(
@@ -38,7 +39,7 @@ class Overs_Container extends StatelessWidget {
                           height: 10,
                           width: 80,
                         ),
-                        Text("${overSep.runs} runs",
+                        Text("${Utils.cheaknull(overSep.runs)} runs",
                             style: TextStyle(
                                 fontSize: 14, color: Colors.grey.shade500)),
                       ],

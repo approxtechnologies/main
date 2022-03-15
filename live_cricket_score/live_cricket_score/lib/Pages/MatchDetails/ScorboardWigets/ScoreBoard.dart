@@ -54,7 +54,6 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = ScoreBoardModel.fromJson(decodedData);
-
     setState(() {});
   }
 
@@ -168,8 +167,7 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
                                 bowler: data.scorecard![index].bowler!,
                               ),
                               Fow_Container(
-                                fow: data.scorecard![index].fow![0].fow!
-                                ,
+                                fow: data.scorecard![index].fow![0].fow!,
                               ),
                             ],
                           ).expand(),

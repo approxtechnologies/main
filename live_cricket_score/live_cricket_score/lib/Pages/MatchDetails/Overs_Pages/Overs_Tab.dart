@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/Overs_Pages/Overs_Container.dart';
@@ -8,7 +7,6 @@ import 'package:live_cricket_score/models/DataModel.dart';
 import 'package:live_cricket_score/models/OversModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:live_cricket_score/utils/Utils.dart';
-import 'package:pagination_view/pagination_view.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Overs_Tab extends StatefulWidget {
@@ -27,7 +25,7 @@ class _Overs_TabState extends State<Overs_Tab>
     with AutomaticKeepAliveClientMixin<Overs_Tab> {
   ScrollController controller = new ScrollController();
   List<OverSep> list = [];
-
+  bool isLoading = false;
   final Matches items;
   int inigs = 0;
   OversModel data = OversModel();
@@ -44,34 +42,20 @@ class _Overs_TabState extends State<Overs_Tab>
     controller
       ..addListener(() {
         if (controller.position.maxScrollExtent == controller.offset) {
-          if (data.overSepList![0]
-                  .overSep![data.overSepList![0].overSep!.length - 1].overNum! >
-              1)
-            getData(
-                (int.parse(data
-                            .overSepList![0]
-                            .overSep![data.overSepList![0].overSep!.length - 1]
-                            .timestamp!) +
-                        1)
-                    .toString(),
+          setState(() {});
+          isLoading = true;
+          if (list![list.length - 1].overNum! == 0) {
+            getData((list[list.length - 1].timestamp!).toString(),
                 (inigs).toString());
-          else {
+          } else {
             if (inigs - 1 >= 0) {
               inigs--;
-              getData(
-                  (int.parse(data
-                              .overSepList![0]
-                              .overSep![
-                                  data.overSepList![0].overSep!.length - 1]
-                              .timestamp!) +
-                          1)
-                      .toString(),
+              getData((list[list.length - 1].timestamp!).toString(),
                   (inigs).toString());
             }
           }
         }
       });
-
     getData("", "");
   }
 
@@ -89,14 +73,23 @@ class _Overs_TabState extends State<Overs_Tab>
     print(decodedData);
     data = OversModel.fromJson(decodedData);
 
-    list.addAll(data.overSepList![0].overSep!);
-    inigs = data.miniscore!.inningsScores![0].inningsScore!.length - 1;
-    setState(() {});
+    setState(() {
+      if (data != null && data.overSepList != null) {
+        if (i != "") {
+          for (int j = 1; j < data.overSepList![0].overSep!.length; j++)
+            list.add(data.overSepList![0].overSep![j]);
+        } else {
+          list.addAll(data.overSepList![0].overSep!);
+        }
+      }
+      inigs = data.miniscore!.inningsScores![0].inningsScore!.length - 1;
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (data != null && data.matchHeaders != null)
+    if (list != null && list.length > 0)
       inigs = data.miniscore!.inningsScores![0].inningsScore!.length;
     return data != null && data.matchHeaders != null
         ? Expanded(
@@ -125,7 +118,6 @@ class _Overs_TabState extends State<Overs_Tab>
                     ],
                   ),
                 ),
-                //data.overSepList![0].overSep![index
                 ListView.builder(
                   controller: controller,
                   shrinkWrap: true,
@@ -133,7 +125,11 @@ class _Overs_TabState extends State<Overs_Tab>
                     return Overs_Container(overSep: list[index]);
                   },
                   itemCount: list.length,
-                ).expand()
+                ).expand(),
+                if (isLoading)
+                  Container(
+                      child: CircularProgressIndicator().centered(),
+                      margin: EdgeInsets.symmetric(vertical: 20)),
               ],
             ),
           )

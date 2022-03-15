@@ -34,8 +34,10 @@ class _Home_TabState extends State<Home_Tab>
     var queryParameters = {
       'matchState': 'recent',
     };
-  
-    var response = await http.get(Utils.getUrl(Utils.MATCHLISTENDPOINT,queryParameters),headers: Utils.HEADERS);
+
+    var response = await http.get(
+        Utils.getUrl(Utils.MATCHLISTENDPOINT, queryParameters),
+        headers: Utils.HEADERS);
     var decodedData = jsonDecode(response.body);
     dataModel!.typeMatches = List.from(decodedData["typeMatches"])
         .map<TypeMatches>((item) => TypeMatches.fromJson(item))
@@ -66,7 +68,7 @@ class _Home_TabState extends State<Home_Tab>
                         style: TextStyle(
                           fontSize: 24.0,
                           color: Colors.black,
-                          fontWeight: FontWeight.bold,  
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),

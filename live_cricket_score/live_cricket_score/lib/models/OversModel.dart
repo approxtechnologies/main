@@ -55,7 +55,6 @@ class Miniscore {
   int? inningsId;
   List<Performance>? performance;
   String? partnership;
-  List<Pp>? pp;
   int? target;
   String? custStatus;
 
@@ -72,7 +71,6 @@ class Miniscore {
       this.inningsId,
       this.performance,
       this.partnership,
-      this.pp,
       this.target,
       this.custStatus});
 
@@ -107,12 +105,6 @@ class Miniscore {
       });
     }
     partnership = json['partnership'];
-    if (json['pp'] != null) {
-      pp = <Pp>[];
-      json['pp'].forEach((v) {
-        pp!.add(new Pp.fromJson(v));
-      });
-    }
     target = json['target'];
     custStatus = json['custStatus'];
   }
@@ -144,9 +136,6 @@ class Miniscore {
       data['performance'] = this.performance!.map((v) => v.toJson()).toList();
     }
     data['partnership'] = this.partnership;
-    if (this.pp != null) {
-      data['pp'] = this.pp!.map((v) => v.toJson()).toList();
-    }
     data['target'] = this.target;
     data['custStatus'] = this.custStatus;
     return data;
@@ -385,57 +374,6 @@ class Performance {
     data['runs'] = this.runs;
     data['wickets'] = this.wickets;
     data['label'] = this.label;
-    return data;
-  }
-}
-
-class Pp {
-  List<PowerPlay>? powerPlay;
-
-  Pp({this.powerPlay});
-
-  Pp.fromJson(Map<String, dynamic> json) {
-    if (json['powerPlay'] != null) {
-      powerPlay = <PowerPlay>[];
-      json['powerPlay'].forEach((v) {
-        powerPlay!.add(new PowerPlay.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.powerPlay != null) {
-      data['powerPlay'] = this.powerPlay!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class PowerPlay {
-  int? id;
-  double? ovrFrom;
-  int? ovrTo;
-  String? ppType;
-  int? run;
-
-  PowerPlay({this.id, this.ovrFrom, this.ovrTo, this.ppType, this.run});
-
-  PowerPlay.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    ovrFrom = json['ovrFrom'];
-    ovrTo = json['ovrTo'];
-    ppType = json['ppType'];
-    run = json['run'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['ovrFrom'] = this.ovrFrom;
-    data['ovrTo'] = this.ovrTo;
-    data['ppType'] = this.ppType;
-    data['run'] = this.run;
     return data;
   }
 }
