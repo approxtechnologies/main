@@ -3,7 +3,6 @@ import 'package:live_cricket_score/Pages/HomeWigets/List_Item.dart';
 
 import 'package:live_cricket_score/models/DataModel.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:sizer/sizer.dart';
 
 class ListItem1 extends StatelessWidget {
   final SeriesMatches data;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:live_cricket_score/Pages/player_info/MainPlayerInfo.dart';
 import 'package:live_cricket_score/models/TeamPlayerListModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -60,31 +61,39 @@ class _Team1TabState extends State<Team1Tab>
               if (data.player![index].id != null) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 60,
-                    child: Row(
-                      children: [
-                        Container(
-                            width: 80,
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(
-                                Utils.getUrl(Utils.IMAGEAPI, {
-                                  'id': data.player![index].imageId.toString()
-                                }).toString(),
-                                headers: Utils.HEADERS,
-                              ),
-                            )),
-                        Container(
-                          child: Text(
-                            data.player![index].name!,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              MainPlayerInfo(played: data.player![index]),
+                        )),
+                    child: Container(
+                      height: 60,
+                      child: Row(
+                        children: [
+                          Container(
+                              width: 80,
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundImage: NetworkImage(
+                                  Utils.getUrl(Utils.IMAGEAPI, {
+                                    'id': data.player![index].imageId.toString()
+                                  }).toString(),
+                                  headers: Utils.HEADERS,
+                                ),
+                              )),
+                          Container(
+                            child: Text(
+                              data.player![index].name!,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );

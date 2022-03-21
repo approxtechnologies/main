@@ -1,7 +1,7 @@
 class Utils {
   static Map<String, String> HEADERS = {
     "X-RapidAPI-Host": "unofficial-cricbuzz.p.rapidapi.com",
-    "X-RapidAPI-Key": "577be2afe3msh7d493e8e4b4f04ap1f92d5jsn75fe281768f3"
+    "X-RapidAPI-Key": "2903e415e9msh20eb3752d031fadp19c8ebjsn4ba1d2b48d46"
   };
   static String IMAGEAPI = "/get-image";
   static String MATCHLISTENDPOINT = "/matches/list";
@@ -10,6 +10,11 @@ class Utils {
   static String OVERSFETCH = "/matches/get-overs";
   static String HIGHLIGHTS = "/matches/get-highlights";
   static String TEAMPLAYERS = "/teams/get-players";
+  static String PLAYERINFO = "/players/get-info";
+  static String BATTINGINFO = "/players/get-batting";
+  static String BOWLINGINFO = "/players/get-bowling";
+  static String CARRERINFO = "/players/get-career";
+  static String NEWSINFO = "/players/get-news";
 
   static Uri getUrl(String endpoint, var queryParameters) {
     return Uri.https(

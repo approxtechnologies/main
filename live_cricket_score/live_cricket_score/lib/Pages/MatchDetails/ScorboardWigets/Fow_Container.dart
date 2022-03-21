@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/FowTableRow.dart';
-import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/BatTableRow.dart';

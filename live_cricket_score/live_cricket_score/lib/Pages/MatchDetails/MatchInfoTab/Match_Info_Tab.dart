@@ -9,7 +9,6 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:live_cricket_score/models/DataModel.dart';
 import 'package:live_cricket_score/models/MatchInfo.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
-import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 
 class Match_Info_Tab extends StatefulWidget {
