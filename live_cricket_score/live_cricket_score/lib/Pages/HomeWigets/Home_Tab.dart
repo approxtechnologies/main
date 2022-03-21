@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:velocity_x/velocity_x.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../models/DataModel.dart';
 import 'ListItem1.dart';
@@ -62,11 +63,12 @@ class _Home_TabState extends State<Home_Tab>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8.00),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
                       child: Text(
                         "${dataModel.typeMatches?[index1].matchType}",
                         style: TextStyle(
-                          fontSize: 24.0,
+                          fontSize: 22.0,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
@@ -84,7 +86,7 @@ class _Home_TabState extends State<Home_Tab>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(8.00),
+                                  padding: EdgeInsets.all(1.w),
                                   child: Text(
                                     "${dataModel.typeMatches?[index1].seriesAdWrapper![index].seriesMatches!.seriesName}",
                                     style: TextStyle(

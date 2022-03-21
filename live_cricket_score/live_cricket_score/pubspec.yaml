@@ -38,7 +38,7 @@ dependencies:
   velocity_x: ^3.4.0
   http: ^0.13.4
   flutter_html: ^2.2.1
-  #flutter_html: ^0.8.2
+  sizer: ^2.0.15
 
 dev_dependencies:
   flutter_test:
