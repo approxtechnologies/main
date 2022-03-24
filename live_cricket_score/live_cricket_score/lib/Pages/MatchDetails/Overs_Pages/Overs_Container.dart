@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 
 import 'package:live_cricket_score/models/OversModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Overs_Container extends StatelessWidget {
@@ -20,52 +22,58 @@ class Overs_Container extends StatelessWidget {
 
     var balls = overSep.overSummary!.split(" ");
     return Container(
-      height: 80,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Column(
-                children: [
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "Ov ${overSep.overNum!.toInt() + 1}",
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: 10,
-                          width: 80,
-                        ),
-                        Text("${Utils.cheaknull(overSep.runs)} runs",
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.grey.shade500)),
-                      ],
-                    ),
+      padding: EdgeInsets.all(1.w),
+      child: Column(children: [
+        Row(
+          children: [
+            Column(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Ov ${overSep.overNum!.toInt() + 1}",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 10,
+                        width: 80,
+                      ),
+                      Text("${Utils.cheaknull(overSep.runs)} runs",
+                          style: TextStyle(
+                              fontSize: 14, color: Colors.grey.shade500)),
+                    ],
                   ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${overSep.ovrBowlNames} to ${s}",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                  Row(
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${overSep.ovrBowlNames} to ${s}",
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: [
                       for (int i = 0; i < balls.length - 1; i++)
                         getBall(balls[i])
                     ],
-                  )
-                ],
-              ).expand()
-            ],
-          )
-        ],
-      ),
+                  ),
+                )
+              ],
+            ).expand()
+          ],
+        ),
+        Container(
+          height: 1,
+          width: 99.w,
+          color: MyThemes.divaidarColor,
+        )
+      ]),
     );
   }
 
@@ -76,36 +84,37 @@ class Overs_Container extends StatelessWidget {
       case "3":
         return Container(
           margin: EdgeInsets.all(5),
-          child: Text(string),
+          child: Text(string, style: TextStyle(color: Colors.white)),
           decoration:
               BoxDecoration(shape: BoxShape.circle, color: Colors.green),
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(8),
         );
 
       case "4":
         return Container(
           margin: EdgeInsets.all(5),
-          child: Text(string),
+          child: Text(string, style: TextStyle(color: Colors.white)),
           decoration: BoxDecoration(
               shape: BoxShape.circle, color: Colors.blue.shade300),
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(8),
         );
 
       case "6":
         return Container(
           margin: EdgeInsets.all(5),
-          child: Text(string),
+          child: Text(string, style: TextStyle(color: Colors.white)),
           decoration: BoxDecoration(
               shape: BoxShape.circle, color: Colors.purple.shade300),
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(8),
         );
 
       case "W":
         return Container(
           margin: EdgeInsets.all(5),
-          child: Text(string),
+          child:
+              Text(string, style: TextStyle(color: Colors.white, fontSize: 12)),
           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(6),
         );
 
       case "Wd":
@@ -130,19 +139,23 @@ class Overs_Container extends StatelessWidget {
       case "N6":
         return Container(
           margin: EdgeInsets.all(5),
-          child: Text(string),
+          child:
+              Text(string, style: TextStyle(color: Colors.white, fontSize: 12)),
           decoration: BoxDecoration(
               shape: BoxShape.circle, color: Colors.yellow.shade700),
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.all(6),
         );
 
       default:
         return Container(
           margin: EdgeInsets.all(5),
-          child: Text(string),
+          child: Text(
+            string,
+            style: TextStyle(color: Colors.white),
+          ),
           decoration: BoxDecoration(
-              shape: BoxShape.circle, color: Colors.grey.shade700),
-          padding: EdgeInsets.all(5),
+              shape: BoxShape.circle, color: Colors.grey.shade400),
+          padding: EdgeInsets.all(8),
         );
     }
   }

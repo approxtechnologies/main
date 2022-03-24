@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:live_cricket_score/Pages/MatchDetails/MatchDetail_Page.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
+
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/Batsmen_Container.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/Boller_container.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/Fow_Container.dart';
 import 'package:live_cricket_score/models/ScorBoardModel.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:live_cricket_score/models/DataModel.dart';
-import 'package:live_cricket_score/models/MatchInfo.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
-import 'package:intl/intl.dart';
 
 class Score_Board_Tab extends StatefulWidget {
   final Matches items;
 
-  //static ScoreBoardModel data;
+  //tatic ScoreBoardModel data;
 
   const Score_Board_Tab({
     Key? key,
@@ -32,18 +32,19 @@ class Score_Board_Tab extends StatefulWidget {
 class _ScoreBoard_State extends State<Score_Board_Tab>
     with AutomaticKeepAliveClientMixin<Score_Board_Tab> {
   final Matches items;
+  var data;
   _ScoreBoard_State(this.items);
 
   @override
   bool get wantKeepAlive => true;
 
+  bool call = false;
+
   @override
   void initState() {
     super.initState();
 
-    if (MatchDetail_Page.data == null)
-      getData();
-    else if (MatchDetail_Page.data.status == null) getData();
+    getData();
   }
 
   getData() async {
@@ -54,135 +55,180 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
     var response = await http.get(
         Utils.getUrl(Utils.MATChSCOREBOARD, queryParameters),
         headers: Utils.HEADERS);
+    setState(() {
+      call = true;
+    });
     var decodedData = jsonDecode(response.body);
     print(decodedData);
-    MatchDetail_Page.data = ScoreBoardModel.fromJson(decodedData);
-    setState(() {});
+    data = ScoreBoardModel.fromJson(decodedData);
+    setState(() {
+      call = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MatchDetail_Page.data != null && MatchDetail_Page.data.status != null
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Row(
-                  children: [
-                    Text("${MatchDetail_Page.data.status} d").p12(),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  primary: true,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Row(
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
+    return data != null && data.status != null
+        ? RefreshIndicator(
+            onRefresh: () => getData(),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+                    child: Text(
+                      "${data.status}",
+                      style: TextStyle(color: MyThemes.textHighlightColor),
+                    ),
+                  ),
+                  Container(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      primary: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: MyThemes.divaidarColor, width: 1.0)),
+                          margin: EdgeInsets.symmetric(
+                              vertical: .5.h, horizontal: 3.w),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: ExpansionTile(
+                              collapsedBackgroundColor: MyThemes.grey,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              initiallyExpanded:
+                                  index == (data.scorecard!.length - 1),
+                              title: Text(
+                                "${data.scorecard![index].score != null ? data.scorecard![index].score : 0} - ${data.scorecard![index].wickets != null ? data.scorecard![index].wickets : 0} (${data.scorecard![index].overs})",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                              textColor: Colors.white,
+                              collapsedTextColor: MyThemes.textColor,
+                              collapsedIconColor: MyThemes.divaidarColor,
+                              iconColor: Colors.white,
                               leading: Text(
-                                MatchDetail_Page
-                                    .data.scorecard![index].batTeamName!,
+                                "${data.scorecard![index].batTeamName!.toUpperCase()}",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              tileColor: Theme.of(context).primaryColor,
-                              trailing: Text(
-                                  "${MatchDetail_Page.data.scorecard![index].score} - ${MatchDetail_Page.data.scorecard![index].wickets} (${MatchDetail_Page.data.scorecard![index].overs})",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              textColor: Colors.white,
-                            ),
-                            Batsmen_Container(
-                              batsman: MatchDetail_Page
-                                  .data.scorecard![index].batsman!,
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8.0, left: 20.0),
-                                      child: Text(
-                                        "Extras",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
+                                if (data.scorecard![index].batsman != null)
+                                  Batsmen_Container(
+                                    batsman: data.scorecard![index].batsman!,
+                                  ),
+                                Container(
+                                  margin: EdgeInsets.all(0),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1.5.h,
+                                                horizontal: 3.w),
+                                            child: Text(
+                                              "Extras",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "${Utils.cheaknull(data.scorecard![index].extras!.total)} b ${Utils.cheaknull(data.scorecard![index].extras!.byes)}, lb ${Utils.cheaknull(data.scorecard![index].extras!.legByes)}, w ${Utils.cheaknull(data.scorecard![index].extras!.wides)}, nb ${Utils.cheaknull(data.scorecard![index].extras!.noBalls)} ",
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "${Utils.cheaknull(MatchDetail_Page.data.scorecard![index].extras!.total)} b ${Utils.cheaknull(MatchDetail_Page.data.scorecard![index].extras!.byes)}, lb ${Utils.cheaknull(MatchDetail_Page.data.scorecard![index].extras!.legByes)}, w ${Utils.cheaknull(MatchDetail_Page.data.scorecard![index].extras!.wides)}, nb ${Utils.cheaknull(MatchDetail_Page.data.scorecard![index].extras!.noBalls)} ",
-                                        textAlign: TextAlign.end,
+                                Container(
+                                  margin: EdgeInsets.all(0),
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1.5.h,
+                                                horizontal: 3.w),
+                                            child: Text(
+                                              "Total",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                )
+                                      Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "${data.scorecard![index].score != null ? data.scorecard![index].score : 0} - ${data.scorecard![index].wickets != null ? data.scorecard![index].wickets : 0} (${data.scorecard![index].overs})",
+                                              textAlign: TextAlign.end,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                if (data.scorecard![index].bowler != null)
+                                  Bower_Container(
+                                    bowler: data.scorecard![index].bowler!,
+                                  ),
+                                if (data.scorecard![index].fow != null &&
+                                    data.scorecard![index].fow![0] != null &&
+                                    data.scorecard![index].fow![0].fow != null)
+                                  Fow_Container(
+                                    fow: data.scorecard![index].fow![0].fow!,
+                                  ),
                               ],
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8.0, left: 20.0),
-                                      child: Text(
-                                        "Total",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "${MatchDetail_Page.data.scorecard![index].score} - ${MatchDetail_Page.data.scorecard![index].wickets} (${MatchDetail_Page.data.scorecard![index].overs})",
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Bower_Container(
-                              bowler: MatchDetail_Page
-                                  .data.scorecard![index].bowler!,
-                            ),
-                            Fow_Container(
-                              fow: MatchDetail_Page
-                                  .data.scorecard![index].fow![0].fow!,
-                            ),
-                          ],
-                        ).expand(),
-                      ],
-                    );
-                  },
-                  itemCount: MatchDetail_Page.data.scorecard?.length,
-                ),
+                          ),
+                        );
+                      },
+                      itemCount: data.scorecard?.length,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           )
-        : CircularProgressIndicator().centered();
+        : call
+            ? Center(
+                child: SvgPicture.asset(
+                "assets/images/no_data.svg",
+                width: 120,
+                height: 120,
+              ))
+            : CircularProgressIndicator().centered();
   }
 }

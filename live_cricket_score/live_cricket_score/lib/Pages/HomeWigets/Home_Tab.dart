@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:velocity_x/velocity_x.dart';
@@ -24,6 +25,8 @@ class _Home_TabState extends State<Home_Tab>
   @override
   bool get wantKeepAlive => true;
 
+  bool call = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,20 +43,27 @@ class _Home_TabState extends State<Home_Tab>
         Utils.getUrl(Utils.MATCHLISTENDPOINT, queryParameters),
         headers: Utils.HEADERS);
     var decodedData = jsonDecode(response.body);
+    if (decodedData["typeMatches"] == null) {
+      setState(() {
+        call = true;
+      });
+      getData();
+    }
+
     dataModel!.typeMatches = List.from(decodedData["typeMatches"])
         .map<TypeMatches>((item) => TypeMatches.fromJson(item))
         .toList();
-    setState(() {});
+    setState(() {
+      call = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (dataModel != null &&
+    return dataModel != null &&
             dataModel!.typeMatches != null &&
-            dataModel.typeMatches!.isNotEmpty)
-          RefreshIndicator(
+            dataModel.typeMatches!.isNotEmpty
+        ? RefreshIndicator(
             onRefresh: () => getData(),
             child: ListView.builder(
               primary: true,
@@ -62,9 +72,12 @@ class _Home_TabState extends State<Home_Tab>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 1.2.h,
+                    ),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
+                          EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
                       child: Text(
                         "${dataModel.typeMatches?[index1].matchType}",
                         style: TextStyle(
@@ -85,17 +98,6 @@ class _Home_TabState extends State<Home_Tab>
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.all(1.w),
-                                  child: Text(
-                                    "${dataModel.typeMatches?[index1].seriesAdWrapper![index].seriesMatches!.seriesName}",
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
                                 if (dataModel
                                             .typeMatches![index1]
                                             .seriesAdWrapper![index]
@@ -123,16 +125,20 @@ class _Home_TabState extends State<Home_Tab>
                       }),
                       itemCount: dataModel
                           .typeMatches![index1].seriesAdWrapper?.length,
-                    ), //Datamodel.typeMatchesList![index1],
+                    ),
                   ],
                 );
               },
               itemCount: dataModel.typeMatches!.length,
             ),
           ).expand()
-        else
-          CircularProgressIndicator().centered().expand(),
-      ],
-    );
+        : call
+            ? Center(
+                child: SvgPicture.asset(
+                "assets/images/no_data.svg",
+                width: 120,
+                height: 120,
+              ))
+            : CircularProgressIndicator().centered();
   }
 }

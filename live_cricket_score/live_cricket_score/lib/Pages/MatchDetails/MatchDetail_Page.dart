@@ -5,6 +5,7 @@ import 'package:live_cricket_score/Pages/MatchDetails/MatchInfoTab/Match_Info_Ta
 import 'package:live_cricket_score/Pages/MatchDetails/Overs_Pages/Overs_Tab.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/ScoreBoard.dart';
 import 'package:live_cricket_score/models/ScorBoardModel.dart';
+import 'package:live_cricket_score/utils/Utils.dart';
 
 import '../../models/DataModel.dart';
 
@@ -24,6 +25,7 @@ class MatchDetail_Page extends StatelessWidget {
     };
     return WillPopScope(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: DefaultTabController(
             length: 5,
@@ -32,26 +34,29 @@ class MatchDetail_Page extends StatelessWidget {
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
-                  new SliverAppBar(
+                  SliverAppBar(
+                    elevation: 5.0,
+                    forceElevated: true,
                     title: Text(
                       "${items.matchInfo!.team1!.teamSName} VS ${items.matchInfo!.team2!.teamSName}",
                       style: TextStyle(fontSize: 18),
                     ),
                     titleSpacing: 0,
-                    leading: new IconButton(
-                      icon: new Icon(Icons.arrow_back_ios_new),
+                    leading: IconButton(
+                      icon: Icon(Icons.arrow_back_ios_new),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     pinned: true,
                     floating: true,
                     bottom: TabBar(
+                      indicatorWeight: 5.0,
                       isScrollable: true,
                       tabs: [
-                        Tab(child: Text('INFO')),
-                        Tab(child: Text('LIVE')),
-                        Tab(child: Text('SCORECARD')),
-                        Tab(child: Text('OVERS')),
-                        Tab(child: Text('HIGHLIGHTS')),
+                        Tab(child: Text('INFO', style: Utils.textStyle)),
+                        Tab(child: Text('LIVE', style: Utils.textStyle)),
+                        Tab(child: Text('SCORECARD', style: Utils.textStyle)),
+                        Tab(child: Text('OVERS', style: Utils.textStyle)),
+                        Tab(child: Text('HIGHLIGHTS', style: Utils.textStyle)),
                       ],
                     ),
                   ),

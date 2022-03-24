@@ -9,6 +9,7 @@ import 'package:live_cricket_score/Pages/player_info/PlayerNewsTab.dart';
 import 'package:live_cricket_score/Pages/player_info/Player_Info_Tab.dart';
 import 'package:live_cricket_score/models/DataModel.dart';
 import 'package:live_cricket_score/models/TeamPlayerListModel.dart';
+import 'package:live_cricket_score/utils/Utils.dart';
 
 class MainPlayerInfo extends StatelessWidget {
   final Player played;
@@ -20,6 +21,7 @@ class MainPlayerInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: DefaultTabController(
           length: 5,
@@ -40,11 +42,21 @@ class MainPlayerInfo extends StatelessWidget {
                   bottom: TabBar(
                     isScrollable: true,
                     tabs: [
-                      Tab(child: Text("Info".toUpperCase())),
-                      Tab(child: Text("Batting".toUpperCase())),
-                      Tab(child: Text("Bowling".toUpperCase())),
-                      Tab(child: Text("Carrer".toUpperCase())),
-                      Tab(child: Text("News".toUpperCase())),
+                      Tab(
+                          child: Text("Info".toUpperCase(),
+                              style: Utils.textStyle)),
+                      Tab(
+                          child: Text("Batting".toUpperCase(),
+                              style: Utils.textStyle)),
+                      Tab(
+                          child: Text("Bowling".toUpperCase(),
+                              style: Utils.textStyle)),
+                      Tab(
+                          child: Text("Carrer".toUpperCase(),
+                              style: Utils.textStyle)),
+                      Tab(
+                          child: Text("News".toUpperCase(),
+                              style: Utils.textStyle)),
                     ],
                   ),
                 ),

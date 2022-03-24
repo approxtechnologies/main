@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/Pages/player_info/MainPlayerInfo.dart';
 import 'package:live_cricket_score/models/TeamPlayerListModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Team1Tab extends StatefulWidget {
@@ -59,59 +61,74 @@ class _Team1TabState extends State<Team1Tab>
             addAutomaticKeepAlives: true,
             itemBuilder: (context, index) {
               if (data.player![index].id != null) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              MainPlayerInfo(played: data.player![index]),
-                        )),
-                    child: Container(
-                      height: 60,
-                      child: Row(
-                        children: [
-                          Container(
-                              width: 80,
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundImage: NetworkImage(
-                                  Utils.getUrl(Utils.IMAGEAPI, {
-                                    'id': data.player![index].imageId.toString()
-                                  }).toString(),
-                                  headers: Utils.HEADERS,
+                return Card(
+                  elevation: 0,
+                  color: MyThemes.grey,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: .5.h),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 1.2.h),
+                      InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MainPlayerInfo(played: data.player![index]),
+                            )),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: 80,
+                                  child: CircleAvatar(
+                                    radius: 28,
+                                    backgroundImage: NetworkImage(
+                                      Utils.getUrl(Utils.IMAGEAPI, {
+                                        'id': data.player![index].imageId
+                                            .toString()
+                                      }).toString(),
+                                      headers: Utils.HEADERS,
+                                    ),
+                                  )),
+                              Container(
+                                child: Text(
+                                  data.player![index].name!,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              )),
-                          Container(
-                            child: Text(
-                              data.player![index].name!,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 1.2.h),
+                    ],
                   ),
                 );
               } else
-                return Container(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                  color: Colors.grey.shade300,
-                  child: Row(
-                    children: [
-                      Text(
-                        data.player![index].name!,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal),
+                return Column(
+                  children: [
+                    SizedBox(height: 2.h),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+                      child: Row(
+                        children: [
+                          Text(
+                            data.player![index].name!.toString(),
+                            style: TextStyle(
+                                color: MyThemes.textColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
             },
             itemCount: data.player!.length,

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:http/http.dart' as http;
-import 'package:live_cricket_score/Pages/MatchDetails/MatchDetail_Page.dart';
-import 'package:live_cricket_score/Pages/MatchDetails/ScorboardWigets/ScoreBoard.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/models/ScorBoardModel.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:live_cricket_score/models/DataModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
@@ -27,6 +27,8 @@ class _Live_State extends State<Live_Tab>
     with AutomaticKeepAliveClientMixin<Live_Tab> {
   final Matches items;
   _Live_State(this.items);
+  static var data;
+  bool call = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -34,10 +36,7 @@ class _Live_State extends State<Live_Tab>
   @override
   void initState() {
     super.initState();
-
-    if (MatchDetail_Page.data == null)
-      getData();
-    else if (MatchDetail_Page.data.status == null) getData();
+    getData();
   }
 
   getData() async {
@@ -48,69 +47,91 @@ class _Live_State extends State<Live_Tab>
     var response = await http.get(
         Utils.getUrl(Utils.MATChSCOREBOARD, queryParameters),
         headers: Utils.HEADERS);
+    setState(() {
+      call = true;
+    });
     var decodedData = jsonDecode(response.body);
     print(decodedData);
-    MatchDetail_Page.data = ScoreBoardModel.fromJson(decodedData);
-    setState(() {});
+    data = ScoreBoardModel.fromJson(decodedData);
+    setState(() {
+      call = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MatchDetail_Page.data != null && MatchDetail_Page.data.status != null
+    return data != null && data.status != null
         ? RefreshIndicator(
             onRefresh: () => getData(),
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (int i = 0;
-                              i < MatchDetail_Page.data.scorecard!.length;
-                              i++)
-                            Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 15),
-                                child: Text(
-                                  "${MatchDetail_Page.data.scorecard![i].batTeamSName!}",
-                                  style: TextStyle(fontSize: 20),
-                                )),
-                        ],
-                      ),
-                      Column(
+              child: Card(
+                elevation: 0,
+                color: MyThemes.grey,
+                margin: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
+                shape: Utils.radious,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Row(
+                      children: [
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            for (int i = 0;
-                                i < MatchDetail_Page.data.scorecard!.length;
-                                i++)
+                            for (int i = 0; i < data.scorecard!.length; i++)
                               Container(
                                   padding: EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 15),
+                                      vertical: 8.0, horizontal: 4.w),
                                   child: Text(
-                                    "${MatchDetail_Page.data.scorecard![i].score} - ${MatchDetail_Page.data.scorecard![i].wickets} (${MatchDetail_Page.data.scorecard![i].overs})",
-                                    style: TextStyle(fontSize: 20),
+                                    "${data.scorecard![i].batTeamSName!}",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
                                   )),
-                          ]),
-                    ],
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 8.0),
-                    child: Text(
-                      "${MatchDetail_Page.data.status}",
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                          ],
+                        ),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for (int i = 0; i < data.scorecard!.length; i++)
+                                Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 15),
+                                    child: Text(
+                                      "${data.scorecard![i].score != null ? data.scorecard![i].score : 0} - ${data.scorecard![i].wickets != null ? data.scorecard![i].wickets : 0} (${data.scorecard![i].overs})",
+                                      style: TextStyle(fontSize: 20),
+                                    )),
+                            ]),
+                      ],
                     ),
-                  ),
-                ],
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 8.0),
+                      child: Text(
+                        "${data.status}",
+                        style: TextStyle(color: MyThemes.textHighlightColor),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    )
+                  ],
+                ),
               ),
             ),
           )
-        : CircularProgressIndicator().centered();
+        : call
+            ? Center(
+                child: SvgPicture.asset(
+                "assets/images/no_data.svg",
+                width: 120,
+                height: 120,
+              ))
+            : CircularProgressIndicator().centered();
   }
 }

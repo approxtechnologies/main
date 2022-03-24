@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:live_cricket_score/utils/Utils.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../models/DataModel.dart';
@@ -22,6 +24,7 @@ class _UpComing_TabState extends State<UpComing_Tab>
 
   @override
   bool get wantKeepAlive => true;
+  bool call = false;
 
   @override
   void initState() {
@@ -34,22 +37,33 @@ class _UpComing_TabState extends State<UpComing_Tab>
     var queryParameters = {
       'matchState': 'upcoming',
     };
-    var response = await http.get(Utils.getUrl(Utils.MATCHLISTENDPOINT,queryParameters), headers: Utils.HEADERS);
+    var response = await http.get(
+        Utils.getUrl(Utils.MATCHLISTENDPOINT, queryParameters),
+        headers: Utils.HEADERS);
+    setState(() {
+      call = true;
+    });
     var decodedData = jsonDecode(response.body);
+    if (decodedData["typeMatches"] == null) {
+      setState(() {
+        call = true;
+      });
+      getData();
+    }
     dataModel!.typeMatches = List.from(decodedData["typeMatches"])
         .map<TypeMatches>((item) => TypeMatches.fromJson(item))
         .toList();
-    setState(() {});
+    setState(() {
+      call = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (dataModel != null &&
+    return dataModel != null &&
             dataModel!.typeMatches != null &&
-            dataModel.typeMatches!.isNotEmpty)
-          RefreshIndicator(
+            dataModel.typeMatches!.isNotEmpty
+        ? RefreshIndicator(
             onRefresh: () => getData(),
             child: ListView.builder(
               primary: true,
@@ -58,8 +72,12 @@ class _UpComing_TabState extends State<UpComing_Tab>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 1.2.h,
+                    ),
                     Container(
-                      padding: EdgeInsets.all(8.00),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: .5.h),
                       child: Text(
                         "${dataModel.typeMatches?[index1].matchType}",
                         style: TextStyle(
@@ -80,17 +98,6 @@ class _UpComing_TabState extends State<UpComing_Tab>
                           return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.all(8.00),
-                                  child: Text(
-                                    "${dataModel.typeMatches?[index1].seriesAdWrapper![index].seriesMatches!.seriesName}",
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
                                 if (dataModel
                                             .typeMatches![index1]
                                             .seriesAdWrapper![index]
@@ -109,8 +116,8 @@ class _UpComing_TabState extends State<UpComing_Tab>
                                           .seriesMatches!)
                                 else
                                   SizedBox(
-                                    height: 20,
-                                    width: 20,
+                                    height: 0,
+                                    width: 0,
                                   )
                               ]);
                         } else
@@ -118,16 +125,20 @@ class _UpComing_TabState extends State<UpComing_Tab>
                       }),
                       itemCount: dataModel
                           .typeMatches![index1].seriesAdWrapper?.length,
-                    ), //Datamodel.typeMatchesList![index1],
+                    ),
                   ],
                 );
               },
               itemCount: dataModel.typeMatches!.length,
             ),
           ).expand()
-        else
-          CircularProgressIndicator().centered().expand(),
-      ],
-    );
+        : call
+            ? Center(
+                child: SvgPicture.asset(
+                "assets/images/no_data.svg",
+                width: 120,
+                height: 120,
+              ))
+            : CircularProgressIndicator().centered();
   }
 }

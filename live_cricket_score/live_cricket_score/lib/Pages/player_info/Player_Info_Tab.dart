@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/models/PlayerInfoModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Player_Info_Tab extends StatefulWidget {
@@ -53,18 +55,20 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  color: Colors.grey.shade200,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 20,
+                        height: 2.h,
                       ),
                       CircleAvatar(
                         backgroundImage:
                             NetworkImage(data.image!, headers: Utils.HEADERS),
-                        radius: 50,
+                        radius: 45,
+                      ),
+                      SizedBox(
+                        height: .5.h,
                       ),
                       Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
@@ -77,176 +81,241 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                         data.intlTeam![0],
                         style: TextStyle(fontSize: 12),
                       ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
+                                vertical: .5.h, horizontal: 3.w),
                             child: Text(
                               "Personal Information",
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                            ).p8(),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: MyThemes.textColor),
+                            ),
                           )
                         ],
+                      ),
+                       SizedBox(
+                        height: .8.h,
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  child: Table(
-                    columnWidths: {
-                      0: FractionColumnWidth(.30),
-                      2: FractionColumnWidth(.7)
-                    },
+                Card(
+                  elevation: 0,
+                  color: MyThemes.grey,
+                  margin: EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: Column(
                     children: [
-                      if (data.doB != null)
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Born",
-                                style: TextStyle(color: Colors.grey.shade500),
-                              ).pOnly(left: 12),
+                      SizedBox(height: 1.h),
+                      Table(
+                        columnWidths: {
+                          0: FractionColumnWidth(.35),
+                          2: FractionColumnWidth(.65)
+                        },
+                        children: [
+                          if (data.doB != null)
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Born",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ).pOnly(left: 12),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(data.doB!,
+                                        style: TextStyle(
+                                            color: MyThemes.textColor))),
+                              ],
                             ),
-                            Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(data.doB!)),
-                          ],
-                        ),
-                      if (data.birthPlace != null)
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Birth Place",
-                                style: TextStyle(color: Colors.grey.shade500),
-                              ).pOnly(left: 12),
+                          if (data.birthPlace != null)
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Birth Place",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ).pOnly(left: 12),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(data.birthPlace!,
+                                        style: TextStyle(
+                                            color: MyThemes.textColor))),
+                              ],
                             ),
-                            Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(data.birthPlace!)),
-                          ],
-                        ),
-                      if (data.nickName != null)
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "NickName",
-                                style: TextStyle(color: Colors.grey.shade500),
-                              ).pOnly(left: 12),
+                          if (data.nickName != null)
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "NickName",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ).pOnly(left: 12),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(data.nickName!,
+                                        style: TextStyle(
+                                            color: MyThemes.textColor))),
+                              ],
                             ),
-                            Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(data.nickName!)),
-                          ],
-                        ),
-                      if (data.role != null)
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Role",
-                                style: TextStyle(color: Colors.grey.shade500),
-                              ).pOnly(left: 12),
+                          if (data.role != null)
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Role",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ).pOnly(left: 12),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(data.role!,
+                                        style: TextStyle(
+                                            color: MyThemes.textColor))),
+                              ],
                             ),
-                            Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(data.role!)),
-                          ],
-                        ),
-                      if (data.bat != null)
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Batting Style",
-                                style: TextStyle(color: Colors.grey.shade500),
-                              ).pOnly(left: 12),
+                          if (data.bat != null)
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Batting Style",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ).pOnly(left: 12),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(data.bat!,
+                                        style: TextStyle(
+                                            color: MyThemes.textColor))),
+                              ],
                             ),
-                            Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(data.bat!)),
-                          ],
-                        ),
-                      if (data.bowl != null)
-                        TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Bowling Style",
-                                style: TextStyle(color: Colors.grey.shade500),
-                              ).pOnly(left: 12),
+                          if (data.bowl != null)
+                            TableRow(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Bowling Style",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ).pOnly(left: 12),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(data.bowl!,
+                                        style: TextStyle(
+                                            color: MyThemes.textColor))),
+                              ],
                             ),
-                            Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(data.bowl!)),
-                          ],
-                        ),
+                        ],
+                      ),
+                      SizedBox(height: 1.h),
                     ],
                   ),
                 ),
-                Container(
-                  color: Colors.grey.shade300,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                        child: Text(
-                          "ICC Rankings".toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ).p8(),
-                      )
-                    ],
-                  ),
+                SizedBox(
+                  height: .8.h,
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
+                      child: Text(
+                        "ICC Rankings",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: MyThemes.textColor),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: .8.h,
                 ),
                 Container(
+                  margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: .5.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: MyThemes.divaidarColor),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                   child: Table(
-                    border: TableBorder.all(color: Colors.grey.shade300),
+                    border: TableBorder.symmetric(
+                        inside: BorderSide(
+                            width: 1, color: MyThemes.divaidarColor)),
                     children: [
-                      // 1
-
+                      // 1---------------------------------------------------------------------------------------------------------
                       TableRow(
+                        decoration: BoxDecoration(
+                            color: MyThemes.grey,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10))),
                         children: [
                           Container(),
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(vertical: 20),
                             child: Center(
                               child: Text(
-                                "TEST",
+                                "Test",
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 14),
+                                    color: MyThemes.TEXT1COLOR,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
                               ).pOnly(left: 12),
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(vertical: 20),
                             child: Center(
                               child: Text(
                                 "ODI",
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 14),
+                                    color: MyThemes.TEXT1COLOR,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
                               ).pOnly(left: 12),
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(vertical: 20),
                             child: Center(
                               child: Text(
                                 "T20I",
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 14),
+                                    color: MyThemes.TEXT1COLOR,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
                               ).pOnly(left: 12),
                             ),
                           ),
@@ -263,7 +332,9 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                               "Bat",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.grey.shade500, fontSize: 14),
+                                  color: MyThemes.TEXT1COLOR,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Padding(
@@ -432,6 +503,7 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                       // bowl-----------------------------------------------------------------------------------------------------------------------------------------
 
                       TableRow(
+                        decoration: BoxDecoration(color: MyThemes.grey),
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 30),
@@ -439,7 +511,9 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                               "Bat",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.grey.shade500, fontSize: 14),
+                                  color: MyThemes.TEXT1COLOR,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Padding(
@@ -616,7 +690,9 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                               "All",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.grey.shade500, fontSize: 14),
+                                  color: MyThemes.TEXT1COLOR,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Padding(
@@ -784,51 +860,73 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                     ],
                   ),
                 ),
-                Container(
-                  color: Colors.grey.shade300,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                        child: Text(
-                          "TEAMS".toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ).p8(),
-                      )
-                    ],
+                SizedBox(
+                  height: 1.h,
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
+                      child: Text(
+                        "Teams",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: MyThemes.textColor),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: .8.h,
+                ),
+                Card(
+                  color: MyThemes.grey,
+                  elevation: 0,
+                  shape: Utils.radious,
+                  margin: EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
+                  child: Container(
+                    margin: EdgeInsets.all(15),
+                    child: Text(
+                      "${data.teams}",
+                      style: TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.normal),
+                    ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "${data.teams}",
-                    style:
-                        TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
-                  ),
+                SizedBox(
+                  height: 1.h,
                 ),
-                Container(
-                  color: Colors.grey.shade300,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                        child: Text(
-                          "PROFILE".toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ).p8(),
-                      )
-                    ],
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
+                      child: Text(
+                        "Profile",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: MyThemes.textColor),
+                      ),
+                    )
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Html(data: "${data.bio}"),
+                SizedBox(
+                  height: .8.h,
+                ),
+                Card(
+                  color: MyThemes.grey,
+                  elevation: 0,
+                  shape: Utils.radious,
+                  margin: EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: Html(data: "${data.bio}"),
+                  ),
                 ),
               ],
             ),

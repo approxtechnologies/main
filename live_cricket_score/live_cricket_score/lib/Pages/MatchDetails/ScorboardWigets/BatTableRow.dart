@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class TableOwnRow {
   final batsman;
+  final index;
 
-  const TableOwnRow({Key? key, this.batsman});
+  TableOwnRow(this.batsman, this.index);
 
   @override
   TableRow build(BuildContext context) {
     return TableRow(
+      decoration:
+          BoxDecoration(color: index % 2 == 0 ? Colors.white : MyThemes.grey),
       children: [
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,59 +25,61 @@ class TableOwnRow {
               Text(
                 "${batsman.name}",
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 12),
-              ).pOnly(left: 12, right: 8),
+                    color: MyThemes.textColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
               if (batsman.outDec != null)
                 Text(
                   "${batsman.outDec}",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
-                ).pOnly(left: 12, right: 8)
+                  style: TextStyle(color: MyThemes.textColor, fontSize: 10),
+                )
               else
                 Text(
                   "Did not bat",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
-                ).pOnly(left: 12, right: 8),
+                  style: TextStyle(color: MyThemes.textColor, fontSize: 10),
+                ),
             ],
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${Utils.cheaknull(batsman.runs)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade800, fontSize: 14),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${Utils.cheaknull(batsman.balls)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${Utils.cheaknull(batsman.fours)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${Utils.cheaknull(batsman.sixes)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${batsman.strkRate}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
       ],

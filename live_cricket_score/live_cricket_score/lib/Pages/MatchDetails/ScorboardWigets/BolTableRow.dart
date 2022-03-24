@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/models/ScorBoardModel.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class TableBowerRow {
   final bowler;
+  final index;
 
-  TableBowerRow(this.bowler);
+  TableBowerRow(this.bowler, this.index);
 
   @override
   TableRow build(BuildContext context) {
     return TableRow(
+      decoration:
+          BoxDecoration(color: index % 2 == 0 ? Colors.white : MyThemes.grey),
       children: [
         Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,49 +26,51 @@ class TableBowerRow {
                 "${bowler.name}",
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 12),
-              ).pOnly(left: 12, right: 8),
+                    color: MyThemes.textColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              )
             ],
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical:8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${bowler.overs}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade800, fontSize: 14),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 14),
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical:8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${cheaknull(bowler.maidens)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical:8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${cheaknull(bowler.runs)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical:8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${cheaknull(bowler.wickets)}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 8.0,bottom: 8.0,right: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 2.5.h),
           child: Text(
             "${bowler.economy}",
-            textAlign: TextAlign.end,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: MyThemes.textColor, fontSize: 12),
           ),
         ),
       ],

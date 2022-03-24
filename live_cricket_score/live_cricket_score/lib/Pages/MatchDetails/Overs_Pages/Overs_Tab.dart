@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
+import 'package:live_cricket_score/Pages/MatchDetails/MatchDetail_Page.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/Overs_Pages/Overs_Container.dart';
 
 import 'package:live_cricket_score/models/DataModel.dart';
 import 'package:live_cricket_score/models/OversModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:live_cricket_score/utils/Utils.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Overs_Tab extends StatefulWidget {
@@ -35,6 +39,8 @@ class _Overs_TabState extends State<Overs_Tab>
   @override
   bool get wantKeepAlive => true;
 
+  bool call = false;
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +62,7 @@ class _Overs_TabState extends State<Overs_Tab>
           }
         }
       });
+
     getData("", "");
   }
 
@@ -69,6 +76,9 @@ class _Overs_TabState extends State<Overs_Tab>
     var response = await http.get(
         Utils.getUrl(Utils.OVERSFETCH, queryParameters),
         headers: Utils.HEADERS);
+    setState(() {
+      call = true;
+    });
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = OversModel.fromJson(decodedData);
@@ -81,8 +91,9 @@ class _Overs_TabState extends State<Overs_Tab>
         } else {
           list.addAll(data.overSepList![0].overSep!);
         }
+        inigs = data.miniscore!.inningsScores![0].inningsScore!.length - 1;
       }
-      inigs = data.miniscore!.inningsScores![0].inningsScore!.length - 1;
+
       isLoading = false;
     });
   }
@@ -92,47 +103,115 @@ class _Overs_TabState extends State<Overs_Tab>
     if (list != null && list.length > 0)
       inigs = data.miniscore!.inningsScores![0].inningsScore!.length;
     return data != null && data.matchHeaders != null
-        ? Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (int i = inigs - 1; i >= 0; i--)
-                            Text(
-                              "${data.miniscore!.inningsScores![0].inningsScore?[i].batTeamShortName}   ${data.miniscore!.inningsScores![0].inningsScore?[i].runs}-${data.miniscore!.inningsScores![0].inningsScore?[i].wickets} (${data.miniscore!.inningsScores![0].inningsScore?[i].overs})",
-                              style:
-                                  TextStyle(fontSize: 22, color: Colors.black),
-                            ).p12(),
-                          Text(
-                            "${data.matchHeaders!.status}",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ).p12(),
-                        ],
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 1.h,
+              ),
+              Card(
+                elevation: 0,
+                color: MyThemes.grey,
+                margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+                shape: Utils.radious,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for (int i = 0;
+                                i <
+                                    data.miniscore!.inningsScores![0]
+                                        .inningsScore!.length;
+                                i++)
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 4.w),
+                                  child: Text(
+                                    "${data.miniscore!.inningsScores![0].inningsScore?[i].batTeamShortName}",
+                                    style: TextStyle(
+                                        color: MyThemes.textColor,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                          ],
+                        ),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for (int i = 0;
+                                  i <
+                                      data.miniscore!.inningsScores![0]
+                                          .inningsScore!.length;
+                                  i++)
+                                Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 15),
+                                    child: Text(
+                                      "${data.miniscore!.inningsScores![0].inningsScore?[i].runs != null ? data.miniscore!.inningsScores![0].inningsScore![i].runs! : 0} - ${data.miniscore!.inningsScores![0].inningsScore?[i].wickets != null ? data.miniscore!.inningsScores![0].inningsScore![i].wickets : 0}(${data.miniscore!.inningsScores![0].inningsScore?[i].overs})",
+                                      style: TextStyle(fontSize: 20),
+                                    )),
+                            ]),
+                      ],
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 8.0),
+                      child: Text(
+                        "${data.matchHeaders!.status}",
+                        style: TextStyle(color: MyThemes.textHighlightColor),
                       ),
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                height: 55.h,
+                child: Card(
+                  elevation: 0,
+                  color: MyThemes.grey,
+                  margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+                  shape: Utils.radious,
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        controller: controller,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Overs_Container(overSep: list[index]);
+                        },
+                        itemCount: list.length,
+                      ).expand(),
+                      if (isLoading)
+                        Container(
+                            child: CircularProgressIndicator().centered(),
+                            margin: EdgeInsets.symmetric(vertical: 20)),
                     ],
                   ),
                 ),
-                ListView.builder(
-                  controller: controller,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Overs_Container(overSep: list[index]);
-                  },
-                  itemCount: list.length,
-                ).expand(),
-                if (isLoading)
-                  Container(
-                      child: CircularProgressIndicator().centered(),
-                      margin: EdgeInsets.symmetric(vertical: 20)),
-              ],
-            ),
+              ),
+            ],
           )
-        : CircularProgressIndicator().centered();
+        : call
+            ? Center(
+                child: SvgPicture.asset(
+                "assets/images/no_data.svg",
+                width: 120,
+                height: 120,
+              ))
+            : CircularProgressIndicator().centered();
   }
 }

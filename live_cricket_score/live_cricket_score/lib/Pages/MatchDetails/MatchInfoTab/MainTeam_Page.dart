@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/MatchInfoTab/Team1Tab.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/MatchInfoTab/Team2Tab.dart';
 import 'package:live_cricket_score/models/DataModel.dart';
+import 'package:live_cricket_score/utils/Utils.dart';
 
 class MainTeamPage extends StatelessWidget {
   final Matches items;
@@ -27,6 +28,8 @@ class MainTeamPage extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 new SliverAppBar(
+                  elevation: 5.0,
+                  forceElevated: true,
                   title: Text('Squads'),
                   titleSpacing: 0,
                   leading: new IconButton(
@@ -36,13 +39,18 @@ class MainTeamPage extends StatelessWidget {
                   pinned: true,
                   floating: true,
                   bottom: TabBar(
+                    indicatorWeight: 5.0,
                     tabs: [
                       Tab(
                           child: Text(
-                              items.matchInfo!.team1!.teamName!.toUpperCase())),
+                        items.matchInfo!.team1!.teamName!.toUpperCase(),
+                        style: Utils.textStyle,
+                      )),
                       Tab(
                           child: Text(
-                              items.matchInfo!.team2!.teamName!.toUpperCase())),
+                        items.matchInfo!.team2!.teamName!.toUpperCase(),
+                        style: Utils.textStyle,
+                      )),
                     ],
                   ),
                 ),
@@ -58,6 +66,5 @@ class MainTeamPage extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

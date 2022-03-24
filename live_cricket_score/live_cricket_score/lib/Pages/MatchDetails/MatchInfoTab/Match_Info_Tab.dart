@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/Pages/MatchDetails/MatchInfoTab/MainTeam_Page.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:live_cricket_score/models/DataModel.dart';
@@ -62,234 +64,369 @@ class _Match_InfoState extends State<Match_Info_Tab>
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 2.h,
+                ),
                 Container(
-                  color: Colors.grey.shade200,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.w, horizontal: 3.w),
                         child: Text(
-                          "SQUADS",
-                        ).p8(),
+                          "Squads",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       )
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainTeamPage(
-                          items: items,
-                          ii: 0,
+                Card(
+                  elevation: 0,
+                  color: MyThemes.grey,
+                  margin: EdgeInsets.symmetric(vertical: 1.w, horizontal: 3.w),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainTeamPage(
+                                items: items,
+                                ii: 0,
+                              ),
+                            )),
+                        child: Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              Container(
+                                  margin: EdgeInsets.symmetric(vertical: 3.w),
+                                  child: CircleAvatar(
+                                    radius: 6.w,
+                                    backgroundImage: NetworkImage(
+                                      Utils.getUrl(Utils.IMAGEAPI, {
+                                        'id': items.matchInfo!.team1!.imageId
+                                            .toString()
+                                      }).toString(),
+                                      headers: Utils.HEADERS,
+                                    ),
+                                    backgroundColor: MyThemes.grey,
+                                  )),
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              Text(
+                                data.team1!.teamName!,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              Column().expand(),
+                              Icon(Icons.arrow_forward_ios, size: 20),
+                              SizedBox(
+                                width: 3.w,
+                              )
+                            ],
+                          ),
                         ),
-                      )),
-                  child: Container(
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(8),
-                          child: Text(data.team1!.teamName!).p12(),
+                      ),
+                      Container(
+                        height: 1,
+                        width: 99.w,
+                        color: MyThemes.divaidarColor,
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainTeamPage(
+                                items: items,
+                                ii: 1,
+                              ),
+                            )),
+                        child: Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              Container(
+                                  margin: EdgeInsets.symmetric(vertical: 3.w),
+                                  child: CircleAvatar(
+                                    radius: 6.w,
+                                    backgroundImage: NetworkImage(
+                                      Utils.getUrl(Utils.IMAGEAPI, {
+                                        'id': items.matchInfo!.team2!.imageId
+                                            .toString()
+                                      }).toString(),
+                                      headers: Utils.HEADERS,
+                                    ),
+                                    backgroundColor: MyThemes.grey,
+                                  )),
+                              SizedBox(
+                                width: 3.w,
+                              ),
+                              Text(
+                                data.team2!.teamName!,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              Column().expand(),
+                              Icon(Icons.arrow_forward_ios, size: 20),
+                              SizedBox(
+                                width: 3.w,
+                              )
+                            ],
+                          ),
                         ),
-                        Column().expand(),
-                        Icon(Icons.arrow_forward_ios),
-                        10.widthBox
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainTeamPage(
-                          items: items,
-                          ii: 1,
-                        ),
-                      )),
-                  child: Container(
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                            color: Colors.white,
-                            padding: EdgeInsets.all(8),
-                            child: Text(data.team2!.teamName!).p12()),
-                        Column().expand(),
-                        Icon(Icons.arrow_forward_ios),
-                        10.widthBox
-                      ],
-                    ),
-                  ),
+                SizedBox(
+                  height: 2.h,
                 ),
                 Container(
-                  color: Colors.grey.shade200,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.w, horizontal: 3.w),
                         child: Text(
-                          "INFO",
-                        ).p8(),
+                          "Info",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       )
                     ],
                   ),
                 ),
-                Table(
-                  columnWidths: {
-                    0: FractionColumnWidth(.25),
-                    1: FractionColumnWidth(.05),
-                    2: FractionColumnWidth(.7)
-                  },
-                  children: [
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Match",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.matchDesc!).p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Series",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.seriesName!).p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Date",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text("${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.startDate!)))} - ${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.endDate!)))}")
-                            .p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Venue",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.venueInfo!.ground!).p12(),
-                      ],
-                    ),
-                  ],
+                Card(
+                  elevation: 0,
+                  color: MyThemes.grey,
+                  margin: EdgeInsets.symmetric(vertical: 1.w, horizontal: 3.w),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Table(
+                        columnWidths: {
+                          0: FractionColumnWidth(.25),
+                          2: FractionColumnWidth(.75)
+                        },
+                        children: [
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Match",
+                                        style: TextStyle(
+                                            color: MyThemes.textColor,
+                                            fontWeight: FontWeight.bold))
+                                    .pOnly(left: 12),
+                              ),
+                              Text(
+                                data.matchDesc!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Series",
+                                        style: TextStyle(
+                                            color: MyThemes.textColor,
+                                            fontWeight: FontWeight.bold))
+                                    .pOnly(left: 12),
+                              ),
+                              Text(
+                                data.seriesName!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Date",
+                                        style: TextStyle(
+                                            color: MyThemes.textColor,
+                                            fontWeight: FontWeight.bold))
+                                    .pOnly(left: 12),
+                              ),
+                              Text(
+                                "${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.startDate!)))} - ${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.endDate!)))}",
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Venue",
+                                        style: TextStyle(
+                                            color: MyThemes.textColor,
+                                            fontWeight: FontWeight.bold))
+                                    .pOnly(left: 12),
+                              ),
+                              Text(
+                                data.venueInfo!.ground!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 2.h,
                 ),
                 Container(
-                  color: Colors.grey.shade200,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.w, horizontal: 3.w),
                         child: Text(
-                          "VENUE GUIDE",
-                        ).p8(),
+                          "Venue Guide",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       )
                     ],
                   ),
                 ),
-                Table(
-                  columnWidths: {
-                    0: FractionColumnWidth(.25),
-                    1: FractionColumnWidth(.05),
-                    2: FractionColumnWidth(.7)
-                  },
-                  children: [
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Stadium",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.venueInfo!.ground!).p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "City",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.venueInfo!.city!).p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Capacity",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text("${data.venueInfo!.capacity}").p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Ends",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.venueInfo!.ends!).p12(),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Host to",
-                            style: TextStyle(color: Colors.grey.shade500),
-                          ).pOnly(left: 12),
-                        ),
-                        Container(),
-                        Text(data.venueInfo!.homeTeam!).p12(),
-                      ],
-                    ),
-                  ],
+                Card(
+                  elevation: 0,
+                  color: MyThemes.grey,
+                  margin: EdgeInsets.symmetric(vertical: 1.w, horizontal: 3.w),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                      Table(
+                        columnWidths: {
+                          0: FractionColumnWidth(.25),
+                          2: FractionColumnWidth(.75)
+                        },
+                        children: [
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Stadium",
+                                  style: TextStyle(
+                                      color: MyThemes.textColor,
+                                      fontWeight: FontWeight.bold),
+                                ).pOnly(left: 12),
+                              ),
+                              Text(
+                                data.venueInfo!.ground!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "City",
+                                  style: TextStyle(
+                                      color: MyThemes.textColor,
+                                      fontWeight: FontWeight.bold),
+                                ).pOnly(left: 12),
+                              ),
+                              Text(
+                                data.venueInfo!.city!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Capacity",
+                                  style: TextStyle(
+                                      color: MyThemes.textColor,
+                                      fontWeight: FontWeight.bold),
+                                ).pOnly(left: 12),
+                              ),
+                              Text(
+                                "${data.venueInfo!.capacity}",
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Ends",
+                                  style: TextStyle(
+                                      color: MyThemes.textColor,
+                                      fontWeight: FontWeight.bold),
+                                ).pOnly(left: 12),
+                              ),
+                              Text(
+                                data.venueInfo!.ends!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Host to",
+                                  style: TextStyle(
+                                      color: MyThemes.textColor,
+                                      fontWeight: FontWeight.bold),
+                                ).pOnly(left: 12),
+                              ),
+                              Text(
+                                data.venueInfo!.homeTeam!,
+                                style: TextStyle(color: MyThemes.textColor),
+                              ).p12(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

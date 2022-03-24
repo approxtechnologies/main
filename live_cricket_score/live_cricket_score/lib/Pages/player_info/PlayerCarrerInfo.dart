@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:http/http.dart' as http;
+import 'package:live_cricket_score/MainWidgets/Themes.dart';
 import 'package:live_cricket_score/models/PlayerBattingInfoModel.dart';
 import 'package:live_cricket_score/models/PlayerCarrerInfoModel.dart';
 import 'package:live_cricket_score/models/PlayerInfoModel.dart';
 import 'package:live_cricket_score/utils/Utils.dart';
+import 'package:sizer/sizer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PlayerCarrerInfo extends StatefulWidget {
@@ -58,44 +60,82 @@ class _Player_CarrerInfo_TabState extends State<PlayerCarrerInfo>
             for (int i = 0; i < data.values!.length; i++)
               Column(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                    color: Colors.grey.shade300,
-                    child: Row(
-                      children: [Text(data.values![i].name!.toUpperCase())],
-                    ),
+                  SizedBox(
+                    height: .8.h,
                   ),
-                  Table(
-                    columnWidths: {
-                      0: FractionColumnWidth(0.3),
-                      1: FractionColumnWidth(0.7),
-                    },
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      TableRow(children: [
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          child: Row(
-                            children: [Text("Debut")],
-                          ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: .5.h, horizontal: 3.w),
+                        child: Text(
+                          data.values![i].name!.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: MyThemes.textColor),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(data.values![i].debut!),
-                        ),
-                      ]),
-                      TableRow(children: [
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          child: Row(
-                            children: [Text("Last Played")],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          child: Text(data.values![i].lastPlayed!),
-                        ),
-                      ])
+                      )
                     ],
+                  ),
+                  // SizedBox(
+                  //   height: .1.h,
+                  // ),
+                  Card(
+                    elevation: 0,
+                    color: MyThemes.grey,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    child: Container(
+                      padding: EdgeInsets.all(2.w),
+                      child: Table(
+                        columnWidths: {
+                          0: FractionColumnWidth(0.3),
+                          1: FractionColumnWidth(0.7),
+                        },
+                        children: [
+                          TableRow(children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Debut",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Text(data.values![i].debut!),
+                            ),
+                          ]),
+                          TableRow(children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Last Played",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              child: Text(data.values![i].lastPlayed!),
+                            ),
+                          ])
+                        ],
+                      ),
+                    ),
                   )
                 ],
               )
