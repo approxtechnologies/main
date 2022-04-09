@@ -82,6 +82,9 @@ class _Overs_TabState extends State<Overs_Tab>
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = OversModel.fromJson(decodedData);
+    if (data != null && data.matchHeaders != null) {
+      getData(timestamp, i);
+    }
 
     setState(() {
       if (data != null && data.overSepList != null) {
@@ -179,7 +182,7 @@ class _Overs_TabState extends State<Overs_Tab>
                 ),
               ),
               Container(
-                height: 55.h,
+                height: 45.h,
                 child: Card(
                   elevation: 0,
                   color: MyThemes.grey,
@@ -207,11 +210,22 @@ class _Overs_TabState extends State<Overs_Tab>
           )
         : call
             ? Center(
-                child: SvgPicture.asset(
-                "assets/images/no_data.svg",
-                width: 120,
-                height: 120,
-              ))
+                child: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/nodata.svg",
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        "Please, Wait to up coming event...",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             : CircularProgressIndicator().centered();
   }
 }

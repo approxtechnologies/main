@@ -52,7 +52,9 @@ class _Match_InfoState extends State<Match_Info_Tab>
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = MatchInfoModel.fromJson(decodedData);
-
+    if (data == null)
+      getData();
+    else if (data.matchId == null) getData();
     setState(() {});
   }
 
@@ -87,8 +89,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                   elevation: 0,
                   color: MyThemes.grey,
                   margin: EdgeInsets.symmetric(vertical: 1.w, horizontal: 3.w),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  shape: Utils.radious,
                   child: Column(
                     children: [
                       InkWell(
@@ -214,8 +215,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                   elevation: 0,
                   color: MyThemes.grey,
                   margin: EdgeInsets.symmetric(vertical: 1.w, horizontal: 3.w),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  shape: Utils.radious,
                   child: Column(
                     children: [
                       SizedBox(
@@ -227,6 +227,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                           2: FractionColumnWidth(.75)
                         },
                         children: [
+                          if(data != null && data.matchDesc != null)
                           TableRow(
                             children: [
                               Padding(
@@ -235,7 +236,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                                         style: TextStyle(
                                             color: MyThemes.textColor,
                                             fontWeight: FontWeight.bold))
-                                    .pOnly(left: 12),
+                                    .pOnly(left: 12,top: 12),
                               ),
                               Text(
                                 data.matchDesc!,
@@ -243,6 +244,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.seriesName != null)
                           TableRow(
                             children: [
                               Padding(
@@ -259,6 +261,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.startDate != null)
                           TableRow(
                             children: [
                               Padding(
@@ -270,11 +273,12 @@ class _Match_InfoState extends State<Match_Info_Tab>
                                     .pOnly(left: 12),
                               ),
                               Text(
-                                "${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.startDate!)))} - ${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.endDate!)))}",
+                                "${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.startDate!)))}" + (data.endDate != null &&  DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.startDate!))) != DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.endDate!))) ?" - ${DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.endDate!)))}":""),
                                 style: TextStyle(color: MyThemes.textColor),
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.venueInfo != null && data.venueInfo!.ground != null)
                           TableRow(
                             children: [
                               Padding(
@@ -322,8 +326,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                   elevation: 0,
                   color: MyThemes.grey,
                   margin: EdgeInsets.symmetric(vertical: 1.w, horizontal: 3.w),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  shape: Utils.radious,
                   child: Column(
                     children: [
                       SizedBox(
@@ -335,6 +338,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                           2: FractionColumnWidth(.75)
                         },
                         children: [
+                          if(data != null && data.venueInfo != null && data.venueInfo!.ground != null)
                           TableRow(
                             children: [
                               Padding(
@@ -352,6 +356,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.venueInfo != null && data.venueInfo!.city != null)
                           TableRow(
                             children: [
                               Padding(
@@ -369,6 +374,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.venueInfo != null && data.venueInfo!.capacity != null)
                           TableRow(
                             children: [
                               Padding(
@@ -386,6 +392,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.venueInfo != null && data.venueInfo!.ends != null)
                           TableRow(
                             children: [
                               Padding(
@@ -403,6 +410,7 @@ class _Match_InfoState extends State<Match_Info_Tab>
                               ).p12(),
                             ],
                           ),
+                          if(data != null && data.venueInfo != null && data.venueInfo!.homeTeam != null)
                           TableRow(
                             children: [
                               Padding(

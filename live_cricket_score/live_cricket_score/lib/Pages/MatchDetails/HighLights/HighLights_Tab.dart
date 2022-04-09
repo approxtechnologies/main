@@ -56,9 +56,6 @@ class _HighLights_TabState extends State<HighLights_Tab>
     var response = await http.get(
         Utils.getUrl(Utils.HIGHLIGHTS, queryParameters),
         headers: Utils.HEADERS);
-    setState(() {
-      call = true;
-    });
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = HighLightsModel.fromJson(decodedData);
@@ -78,8 +75,7 @@ class _HighLights_TabState extends State<HighLights_Tab>
             elevation: 0,
             margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
             color: MyThemes.grey,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            shape: Utils.radious,
             child: Column(
               children: [
                 ListView.builder(
@@ -92,11 +88,22 @@ class _HighLights_TabState extends State<HighLights_Tab>
           )
         : call
             ? Center(
-                child: SvgPicture.asset(
-                "assets/images/no_data.svg",
-                width: 120,
-                height: 120,
-              ))
+                child: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/nodata.svg",
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        "Please, Wait to up coming event...",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             : CircularProgressIndicator().centered();
   }
 }

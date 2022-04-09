@@ -87,8 +87,7 @@ class _Player_CarrerInfo_TabState extends State<PlayerCarrerInfo>
                     color: MyThemes.grey,
                     margin:
                         EdgeInsets.symmetric(vertical: 1.h, horizontal: 3.w),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    shape: Utils.radious,
                     child: Container(
                       padding: EdgeInsets.all(2.w),
                       child: Table(

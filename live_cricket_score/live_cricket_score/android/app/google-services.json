@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1001342787774",
+    "project_id": "live-cricket-score-11661",
+    "storage_bucket": "live-cricket-score-11661.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001342787774:android:c39a1be56c5d37a5eb7eef",
+        "android_client_info": {
+          "package_name": "com.kimsoladavo.cricketscore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001342787774-9sc05fn20nldgj9huik1nokn5gc5mit0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXQtQ0NdO18nBC9GzckwHEUvsrlWlMSZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001342787774-9sc05fn20nldgj9huik1nokn5gc5mit0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

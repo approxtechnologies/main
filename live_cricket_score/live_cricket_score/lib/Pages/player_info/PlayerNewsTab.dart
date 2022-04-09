@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 
 class PlayerNewsTab extends StatefulWidget {
   final String id;
+
   const PlayerNewsTab({
     Key? key,
     required this.id,
@@ -31,6 +32,7 @@ class _Player_News_TabState extends State<PlayerNewsTab>
   @override
   bool get wantKeepAlive => true;
   final String id;
+
   //PlayerNewsModel data;
   var data;
 
@@ -49,7 +51,9 @@ class _Player_News_TabState extends State<PlayerNewsTab>
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = PlayerNewsModel.fromJson(decodedData);
-
+    if (data == null)
+      getData();
+    else if (data.newsList == null) getData();
     setState(() {});
   }
 

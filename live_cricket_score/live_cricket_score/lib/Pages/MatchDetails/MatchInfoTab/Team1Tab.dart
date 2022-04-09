@@ -55,7 +55,7 @@ class _Team1TabState extends State<Team1Tab>
 
   @override
   Widget build(BuildContext context) {
-    return data != null
+    return data != null && data.player != null
         ? ListView.builder(
             primary: true,
             addAutomaticKeepAlives: true,
@@ -64,8 +64,7 @@ class _Team1TabState extends State<Team1Tab>
                 return Card(
                   elevation: 0,
                   color: MyThemes.grey,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  shape: Utils.radious,
                   margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: .5.h),
                   child: Column(
                     children: [

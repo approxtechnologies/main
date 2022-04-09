@@ -33,6 +33,7 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
     with AutomaticKeepAliveClientMixin<Score_Board_Tab> {
   final Matches items;
   var data;
+
   _ScoreBoard_State(this.items);
 
   @override
@@ -50,7 +51,10 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
   getData() async {
     var queryParameters = {
       'matchId': items.matchInfo?.matchId.toString(),
+
     };
+
+    print("match id " + items.matchInfo!.matchId!.toString());
 
     var response = await http.get(
         Utils.getUrl(Utils.MATChSCOREBOARD, queryParameters),
@@ -61,6 +65,9 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
     var decodedData = jsonDecode(response.body);
     print(decodedData);
     data = ScoreBoardModel.fromJson(decodedData);
+    if (data == null)
+      getData();
+    else if (data.scorecard == null) getData();
     setState(() {
       call = true;
     });
@@ -68,7 +75,7 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
 
   @override
   Widget build(BuildContext context) {
-    return data != null && data.status != null
+    return data != null && data.scorecard != null
         ? RefreshIndicator(
             onRefresh: () => getData(),
             child: SingleChildScrollView(
@@ -224,11 +231,22 @@ class _ScoreBoard_State extends State<Score_Board_Tab>
           )
         : call
             ? Center(
-                child: SvgPicture.asset(
-                "assets/images/no_data.svg",
-                width: 120,
-                height: 120,
-              ))
+                child: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/nodata.svg",
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        "Please, Wait to up coming event...",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             : CircularProgressIndicator().centered();
   }
 }

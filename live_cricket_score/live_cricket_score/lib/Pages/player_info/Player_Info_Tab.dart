@@ -100,7 +100,7 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                           )
                         ],
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: .8.h,
                       ),
                     ],
@@ -110,8 +110,7 @@ class _Player_Info_TabState extends State<Player_Info_Tab>
                   elevation: 0,
                   color: MyThemes.grey,
                   margin: EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  shape: Utils.radious,
                   child: Column(
                     children: [
                       SizedBox(height: 1.h),

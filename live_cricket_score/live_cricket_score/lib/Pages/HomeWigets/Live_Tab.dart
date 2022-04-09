@@ -24,6 +24,7 @@ class _Live_TabState extends State<Live_Tab>
   @override
   bool get wantKeepAlive => true;
   bool call = false;
+
   @override
   void initState() {
     super.initState();
@@ -45,76 +46,82 @@ class _Live_TabState extends State<Live_Tab>
         call = true;
       });
       getData();
+      return;
     }
-    dataModel!.typeMatches = List.from(decodedData["typeMatches"])
+    dataModel.typeMatches = List.from(decodedData["typeMatches"])
         .map<TypeMatches>((item) => TypeMatches.fromJson(item))
         .toList();
+
+    if (dataModel.typeMatches![1].matchType == "League") {
+      var leaguage = dataModel.typeMatches![1];
+      dataModel.typeMatches!.removeAt(1);
+      dataModel.typeMatches!.insert(0, leaguage);
+    }
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return dataModel != null &&
-            dataModel!.typeMatches != null &&
+            dataModel.typeMatches != null &&
             dataModel.typeMatches!.isNotEmpty
-        ? RefreshIndicator(
-            onRefresh: () => getData(),
-            child: ListView.builder(
-              primary: true,
-              itemBuilder: (context, index1) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 1.2.h,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: .5.h, horizontal: 3.w),
-                      child: Text(
-                        "${dataModel.typeMatches?[index1].matchType}",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+        ? Container(
+            width: 100.w,
+            height: 100.h,
+            child: RefreshIndicator(
+              onRefresh: () => getData(),
+              child: ListView.builder(
+                primary: true,
+                itemBuilder: (context, index1) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 1.2.h,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: .5.h, horizontal: 3.w),
+                        child: Text(
+                          "${dataModel.typeMatches?[index1].matchType}",
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    ListView.builder(
-                      primary: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: ((context, index) {
-                        if (dataModel.typeMatches?[index1]
-                                .seriesAdWrapper![index].seriesMatches !=
-                            null) {
-                          return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListItem1(
-                                    data: dataModel.typeMatches![index1]
-                                        .seriesAdWrapper![index].seriesMatches!)
-                              ]);
-                        } else
-                          return Container().h0(context);
-                      }),
-                      itemCount: dataModel
-                          .typeMatches![index1].seriesAdWrapper?.length,
-                    ), //Datamodel.typeMatchesList![index1],
-                  ],
-                );
-              },
-              itemCount: dataModel.typeMatches!.length,
+                      ListView.builder(
+                        primary: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: ((context, index) {
+                          if (dataModel.typeMatches?[index1]
+                                  .seriesAdWrapper![index].seriesMatches !=
+                              null) {
+                            return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ListItem1(
+                                      data: dataModel
+                                          .typeMatches![index1]
+                                          .seriesAdWrapper![index]
+                                          .seriesMatches!)
+                                ]);
+                          } else
+                            return Container().h0(context);
+                        }),
+                        itemCount: dataModel
+                            .typeMatches![index1].seriesAdWrapper?.length,
+                      ), //Datamodel.typeMatchesList![index1],
+                    ],
+                  );
+                },
+                itemCount: dataModel.typeMatches!.length,
+              ),
             ),
-          ).expand()
-        : call
-            ? Center(
-                child: SvgPicture.asset(
-                "assets/images/no_data.svg",
-                width: 120,
-                height: 120,
-              ))
-            : CircularProgressIndicator().centered();
+          )
+        : CircularProgressIndicator().centered();
   }
 }

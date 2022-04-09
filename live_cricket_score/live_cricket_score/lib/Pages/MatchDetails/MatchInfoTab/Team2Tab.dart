@@ -64,8 +64,7 @@ class _Team2TabState extends State<Team2Tab>
                 return Card(
                   elevation: 0,
                   color: MyThemes.grey,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  shape: Utils.radious,
                   margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: .5.h),
                   child: Column(
                     children: [
